@@ -14,22 +14,26 @@ import java.util.List;
 @Service
 @Transactional
 public class CodingDojoServiceImpl implements CodingDojoService {
-	
-	@Autowired
-	private CodingDojoDao dao;
 
-	public CodingDojoDao getDao() {
-		return dao;
-	}
-	
-	public void save(CodingDojo codingDojo) {
-		dao.save(codingDojo);
-	}
-	@Override
-	public List<CodingDojo> queryAll(){
-		List<CodingDojo> list = dao.findAll();
-		list.sort((a, b) -> a.getCreatTime().isAfter(b.getCreatTime()) ? -1 : 1);
-		return list;
-	}
+    @Autowired
+    private CodingDojoDao dao;
+
+    public CodingDojoDao getDao() {
+        return dao;
+    }
+
+    public void save(CodingDojo codingDojo) {
+        dao.findTopByOrderBySeqNoDesc().ifPresent(o -> codingDojo.setSeqNo(o.getSeqNo() + 1L)
+        );
+
+        dao.save(codingDojo);
+    }
+
+    @Override
+    public List<CodingDojo> queryAll() {
+        List<CodingDojo> list = dao.findAll();
+        list.sort((a, b) -> a.getCreatTime().isAfter(b.getCreatTime()) ? -1 : 1);
+        return list;
+    }
 
 }
