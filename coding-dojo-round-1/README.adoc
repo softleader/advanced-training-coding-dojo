@@ -1,0 +1,21 @@
+= Coding Dojo -Round1
+
+== 題目: 留言板
+
+* 預計的部屬環境: 以 mvn spring-boot:run 在某台電腦上，並開啟 80 port 讓其他人訪問網頁介面
+* 基礎環境
+** Database: H2 run in memory
+** Java Dependencies: Spring-MVC, Thymeleaf, Spring-Data-JPA, Lombok
+
+== 規則:
+
+1. 不可以增加 Java Dependencies
+2. 不可以使用 Javascript 套件
+3. 承上兩點，所以有多需要啥就自己刻出來
+
+== 需求:
+
+1. 可以留言，留言上要顯示IP、流水號、使用者名稱(於留言時輸入)、留言內容，並依發文時間降冪排序
+2. 留言可以被回覆，多個回覆時以回覆時間升冪排序，回覆的內容項目與留言相同，回覆本身不能被回覆
+3. 留言內容中的 >> [流水號] 作為tag (例:>> 1)，使用者點擊tag後要可以自動把畫面跳轉到那篇留言上
+4. 要可以貼圖
