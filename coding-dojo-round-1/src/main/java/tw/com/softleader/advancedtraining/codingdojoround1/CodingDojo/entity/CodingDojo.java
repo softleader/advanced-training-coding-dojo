@@ -7,6 +7,7 @@ import lombok.ToString;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -23,4 +24,6 @@ public class CodingDojo {
   private String user;
 
   private String content;
+
+  private LocalDateTime localDateTime;
 }

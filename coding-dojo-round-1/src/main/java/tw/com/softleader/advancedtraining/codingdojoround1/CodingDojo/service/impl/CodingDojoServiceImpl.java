@@ -9,6 +9,8 @@ import tw.com.softleader.advancedtraining.codingdojoround1.CodingDojo.dao.Coding
 import tw.com.softleader.advancedtraining.codingdojoround1.CodingDojo.entity.CodingDojo;
 import tw.com.softleader.advancedtraining.codingdojoround1.CodingDojo.service.CodingDojoService;
 
+import java.util.List;
+
 @Service
 @Transactional
 public class CodingDojoServiceImpl implements CodingDojoService {
@@ -24,6 +26,10 @@ public class CodingDojoServiceImpl implements CodingDojoService {
 		
 		return dao.save(codingDojo);
 	}
-	
+
+	public List<CodingDojo> queryAll(){
+
+		return dao.findAll();
+	}
 
 }
