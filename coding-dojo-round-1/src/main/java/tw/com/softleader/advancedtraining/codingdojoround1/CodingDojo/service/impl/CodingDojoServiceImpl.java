@@ -26,10 +26,11 @@ public class CodingDojoServiceImpl implements CodingDojoService {
 		
 		return dao.save(codingDojo);
 	}
-
+	@Override
 	public List<CodingDojo> queryAll(){
-
-		return dao.findAll();
+		List<CodingDojo> list = dao.findAll();
+		list.sort((a, b) -> a.getCreatTime().isAfter(b.getCreatTime()) ? -1 : 1);
+		return list;
 	}
 
 }

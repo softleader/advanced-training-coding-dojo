@@ -25,5 +25,5 @@ public class CodingDojo {
 
   private String content;
 
-  private LocalDateTime localDateTime;
+  private LocalDateTime creatTime = LocalDateTime.now();
 }
