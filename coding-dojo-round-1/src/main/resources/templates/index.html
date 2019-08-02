@@ -19,11 +19,14 @@
 
 <h1>HELLO DOJO</h1>
 <div>
+    <form action="/getall" method="get">
+        <button type="submit">refresh</button>
+    </form>
+    <input type="text" value="${#list}">
     <form id="form" action = "/save" method="post">
-            <div>流水號:<input type="text" name="seq" /></div>
             <div>使用者名稱:<input type="text" name="user" /></div>
             <div>留言內容:<input type="textarea" name="content" /></div>
-                <input type='submit'>
+                <input type='submit' value="Go">
     </form>
 
     

@@ -28,4 +28,6 @@ public class CodingDojo {
   private String content;
 
   private LocalDateTime creatTime = LocalDateTime.now();
+
+  private String ip;
 }

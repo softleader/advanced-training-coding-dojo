@@ -1,6 +1,8 @@
 package tw.com.softleader.advancedtraining.codingdojoround1.CodingDojo.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,13 +18,15 @@ public class CodingDojoController {
   CodingDojoService service;
 
   @GetMapping("/getall")
-  public List<CodingDojo> getAll() {
+  public List<CodingDojo> getAll(Model model) {
+
+    model.addAttribute("list", service.queryAll());
     return service.queryAll();
   }
 
   @PostMapping("/save")
-  public String saveMessage(@RequestBody CodingDojo form) {
-
+  public String saveMessage(@RequestBody CodingDojo form, HttpRequest httpRequest) {
+    form.setIp(httpRequest.getHeaders().toString());
     service.save(form);
     return "/";
   }
