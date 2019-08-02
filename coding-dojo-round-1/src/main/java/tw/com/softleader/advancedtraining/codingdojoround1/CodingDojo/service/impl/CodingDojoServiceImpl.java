@@ -1,14 +1,12 @@
 package tw.com.softleader.advancedtraining.codingdojoround1.CodingDojo.service.impl;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import tw.com.softleader.advancedtraining.codingdojoround1.CodingDojo.dao.CodingDojoDao;
 import tw.com.softleader.advancedtraining.codingdojoround1.CodingDojo.entity.CodingDojo;
 import tw.com.softleader.advancedtraining.codingdojoround1.CodingDojo.service.CodingDojoService;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -31,9 +29,7 @@ public class CodingDojoServiceImpl implements CodingDojoService {
 
     @Override
     public List<CodingDojo> queryAll() {
-        List<CodingDojo> list = dao.findAll();
-        list.sort((a, b) -> a.getCreatTime().isAfter(b.getCreatTime()) ? -1 : 1);
-        return list;
+        return dao.findByOrderByCreatTimeDesc();
     }
 
 }

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<script>
+  queryAll();
+
+  function doSave() {
+    fetch('/fetch/save', {
+      body: JSON.stringify({
+        user: document.querySelector("#user").value,
+        content: document.querySelector("#content").value
+      }), // must match 'Content-Type' header
+      headers: {
+        'content-type': 'application/json'
+      },
+      method: 'POST' // *GET, POST, PUT, DELETE, etc.
+    });
+  };
+
+    function queryAll() {
+
+      fetch('/fetch/getall')
+        .then(function(response) {
+          return response.json();
+        })
+        .then(function(myJson) {
+          console.log(myJson);
+
+          document.querySelector("#list").innerHTML = myJson.map(j => `<tr><td>${j.id}</td></tr>`).join("\n");
+
+        });
+    }
+
+
+</script>
+
+<body>
+
+<h1>HELLO DOJO</h1>
+<div>
+    <input type="text" value="${#list}">
+    <form>
+            <div>使用者名稱:<input id="user" type="text" name="user" /></div>
+            <div>留言內容:<input id="content" type="textarea" name="content" /></div>
+        <button type="button" id="go" onclick="doSave()">go</button>
+    </form>
+    <table width="100%"  id="dataTables-example">
+        <thead>
+        <tr>
+            <th>id</th>
+        </tr>
+        </thead>
+        <tbody id="list">
+        </tbody>
+    </table>
+
+    
+</div>
+</body>
+</html>

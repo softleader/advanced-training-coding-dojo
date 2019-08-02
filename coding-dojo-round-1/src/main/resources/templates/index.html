@@ -31,17 +31,16 @@
     <table width="100%"  id="dataTables-example">
         <thead>
         <tr>
-            <th>使用者名稱</th>
-            <th>留言內容</th>
+            <th>id</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="codingDojo:${list}" class="odd gradeX">
             <td th:text="${codingDojo.id}"></td>
-
+        </tr>
         </tbody>
     </table>
-    <img src="img_girl.jpg" alt="Girl in a jacket">
+    <img src="/getImage" alt="Girl in a jacket">
 
     
 </div>
