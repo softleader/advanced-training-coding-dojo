@@ -22,9 +22,8 @@ public class CodingDojoServiceImpl implements CodingDojoService {
 		return dao;
 	}
 	
-	public CodingDojo save(CodingDojo codingDojo) {
-		
-		return dao.save(codingDojo);
+	public void save(CodingDojo codingDojo) {
+		dao.save(codingDojo);
 	}
 	@Override
 	public List<CodingDojo> queryAll(){

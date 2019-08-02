@@ -6,4 +6,6 @@ import tw.com.softleader.advancedtraining.codingdojoround1.CodingDojo.entity.Cod
 public interface CodingDojoService {
 
   List<CodingDojo> queryAll();
+
+  void save(CodingDojo form);
 }
