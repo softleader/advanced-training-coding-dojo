@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>留言板</title>
+  <style>
+    table, th, td {
+      border: 1px solid black;
+      border-collapse: collapse;
+    }
+  </style>
+</head>
+<body>
+<h1>留言板</h1>
+<label>
+  使用者名稱
+  <input type="text" id="userName">
+</label>
+<label>
+  留言內容
+  <input type="text" id="content">
+</label>
+上傳圖片<input type="file" id="image">
+<button onclick="save()">送出</button>
+<br>
+<h1>留言列表</h1>
+<table>
+  <thead>
+  <tr>
+    <td>IP</td>
+    <td>流水號</td>
+    <td>使用者名稱</td>
+    <td>留言內容</td>
+    <td>貼圖</td>
+    <td>發文時間</td>
+    <td>回覆</td>
+  </tr>
+  </thead>
+  <tbody id="showMsg"></tbody>
+</table>
+<script>
+  getAllMsg();
+
+  function save() {
+    let data = {
+      userName: document.querySelector("#userName").value,
+      content: document.querySelector("#content").value
+    };
+    let file = document.querySelector("#image").files[0];
+    let fileReader = new FileReader();
+    fileReader.onload = (e) => {
+      data.image = {};
+      let imageArrayBuffer = e.target.result;
+      data.image = Array.from(new Uint8Array(imageArrayBuffer));
+    };
+    fileReader.onloadend = () => {
+      console.log(data);
+      fetch("/user", {
+        body: JSON.stringify(data),
+        headers: {"content-type": "application/json"},
+        method: "POST"
+      }).then(response => {
+        // console.log(response);
+      }).finally(() => {
+        getAllMsg();
+      });
+    };
+    fileReader.readAsArrayBuffer(file);
+  }
+
+  function getAllMsg() {
+    fetch("/user").then(response => {
+      // console.log(response);
+      return response.json()
+    }).then(jsonData => {
+      // console.log(jsonData);
+      let showMsgElement = document.querySelector("#showMsg");
+      let dataTrElement = '';
+      let replyText = '';
+
+      jsonData.forEach(
+          msg => {
+            msg.reply.forEach(
+                reply => {
+                  let replyTagArray = reply.content.replace(/(>>)(\d+)/g, '<a href="#$2">$1$2</a>');
+                  console.log(replyTagArray);
+                  replyText += `IP：${reply.ip}，流水號：${reply.id}，使用者名稱：${reply.userName}，回覆內容：${replyTagArray}，發文時間:${reply.createDateTime}<br/>`;
+                });
+            console.log(msg.image);
+            let str = String.fromCharCode.apply(null, new Uint8Array(msg.image));
+            let imgSrc = "data:image/png;base64, " + btoa(str);
+            dataTrElement += `<tr id="${msg.id}"><td>${msg.ip}</td><td>${msg.id}</td><td>${msg.userName}</td><td>${msg.content}</td><td><img id="img" alt="" src="${imgSrc}"/></td><td>${msg.createDateTime}</td><td>${replyText}</td><td><button onclick="replyMsg(${msg.id})">回覆</button>使用者名稱<input type="text" id="userName_${msg.id}" />回覆內容<input type="text" id="content_${msg.id}" /></td></ud></tr>`;
+            replyText = '';
+          });
+      showMsgElement.innerHTML = dataTrElement;
+    })
+  }
+
+  function replyMsg(id) {
+    return fetch(`/user/${id}`, {
+      body: JSON.stringify({
+        userName: document.querySelector(`#userName_${id}`).value,
+        content: document.querySelector(`#content_${id}`).value
+      }),
+      headers: {"content-type": "application/json"},
+      method: "PUT"
+    }).then(response => {
+      // console.log(response);
+    }).finally(() => {
+      getAllMsg();
+    });
+  }
+
+</script>
+</body>
+</html>
