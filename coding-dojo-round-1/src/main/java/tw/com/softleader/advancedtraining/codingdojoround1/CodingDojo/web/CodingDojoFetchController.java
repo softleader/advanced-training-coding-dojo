@@ -22,9 +22,8 @@ public class CodingDojoFetchController {
   }
 
   @PostMapping("/save")
-  public String saveMessage(@RequestBody CodingDojo codingDojo) {
-    service.save(codingDojo);
-    return "儲存成功";
+  public CodingDojo saveMessage(@RequestBody CodingDojo codingDojo) {
+    return service.save(codingDojo);
   }
 
 }

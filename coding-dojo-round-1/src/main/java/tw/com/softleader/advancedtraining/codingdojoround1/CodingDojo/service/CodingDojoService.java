@@ -9,6 +9,6 @@ public interface CodingDojoService {
 
   List<CodingDojo> queryAll();
 
-  void save(CodingDojo form);
+  CodingDojo save(CodingDojo form);
 
 }

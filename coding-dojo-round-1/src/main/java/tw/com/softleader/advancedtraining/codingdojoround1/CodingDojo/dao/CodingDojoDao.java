@@ -11,5 +11,6 @@ import java.util.Optional;
 public interface CodingDojoDao extends JpaRepository<CodingDojo, Long > {
 
     Optional<CodingDojo> findTopByOrderBySeqNoDesc();
+    
     List<CodingDojo> findByOrderByCreatTimeDesc();
 }

@@ -1,46 +1,177 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 
 <script>
+  queryAll();
 
-    function formSubmit()
-    {
-        document.getElementById("form").submit()
+  //回覆的留言ID
+  //let replyMessageId;
+
+//=========================================
+  function doSave() {
+    fetch('/fetch/save', {
+      body: JSON.stringify({
+        user: document.querySelector("#user").value,
+        content: document.querySelector("#content").value
+      }), 
+      headers: {
+        'content-type': 'application/json'
+      },
+      method: 'POST' 
+    })
+    .then((response) => {
+      if(response.status === 200){
+        alert("儲存成功");
+        response.json().then((data) => {
+          document.querySelector("#list").innerHTML = `<tr><td>${data.id}</td><td>${data.ip}</td><td>${data.user}</td><td>${data.content}</td>
+                                                  <td id='msg${data.id}'><button onclick='showReplyModal(${data.id})'>REPLY</button></td></tr>\n` 
+                                                  + document.querySelector("#list").innerHTML;
+        });
+        
+      }else{
+        alert("儲存失敗");
+      }
+    });
+    
+    
+  };
+
+
+  
+//=========================================
+    function queryAll() {
+
+      fetch('/fetch/getall')
+        .then(function(response) {
+          return response.json();
+        })
+        .then(function(myJson) {
+          console.log(myJson);
+          document.querySelector("#list").innerHTML 
+            = myJson.map(j => `<tr><td>${j.id}</td><td>${j.ip}</td><td>${j.user}</td><td>${j.content}</td>
+                                <td id='msg${j.id}'>
+                                  <button onclick='showReplyModal(${j.id})'>REPLY</button>
+                                </td></tr>`).join("\n");
+        });
     }
+
+
+//=========================================
+    function showReplyMessages(replyMessages){
+      console.log(replyMessages);
+    }
+//=========================================
+    function showReplyModal(msgId){
+      console.log(msgId);
+
+      fetch('/reply/find-by-message', {
+        body: JSON.stringify({
+          id: msgId
+        }), 
+        headers: {
+          'content-type': 'application/json'
+        },
+        method: 'POST' 
+      }).then((response) => {
+        
+        response.json().then((msgs) => {
+          console.log("msgs", msgs);
+          var msgTableId = "table" + msgId;
+          if(document.getElementById(msgTableId) === null){
+            //回覆table
+            var msgsTable = document.createElement("table");
+            msgsTable.setAttribute("id", msgTableId);
+            //msgsTable.innerHTML = "<thead><tr><th>Name</th><th>Reply</th><th>Time</th></tr></thead>";
+            msgsTable.innerHTML += "<tbody>" + msgs.map(msg => `<tr><td><span style="font-weight:bold;">${msg.replyUser}</span></td><td>${msg.replyContent}</td><td>${msg.creatTime}</td></tr>`)
+                        + "</tbody>";
+            console.log(msgsTable);
+            document.getElementById("msg" + msgId).appendChild(msgsTable);
+            //回覆form
+            var replyMsgForm = document.createElement("form");
+            replyMsgForm.innerHTML = `<input id="replyUser${msgId}" type="text" name="replyUser" placeholder="姓名"/>`;
+            replyMsgForm.innerHTML += `<input id="replyContent${msgId}" type="textarea" name="replyContent"  placeholder="回覆內容"/>`;
+            replyMsgForm.innerHTML += `<button type="button" id="sendReply" onclick="saveReply(${msgId})">Send</button>`;
+            document.getElementById("msg" + msgId).appendChild(replyMsgForm);
+            
+
+          }
+
+          
+        });
+      });
+
+
+
+
+    }
+
+//=========================================
+    function saveReply(msgId){
+      fetch('/reply/save', {
+      body: JSON.stringify({
+        codingDojo: {id: msgId},
+        replyUser: document.querySelector("#replyUser"+msgId).value,
+        replyContent: document.querySelector("#replyContent"+msgId).value
+      }), // must match 'Content-Type' header
+      headers: {
+        'content-type': 'application/json'
+      },
+      method: 'POST' // *GET, POST, PUT, DELETE, etc.
+    })
+    .then((response) => {
+      if(response.status === 200){
+        alert("回覆成功");
+        response.json().then((data) => {
+          console.log("reply res = ", data)
+          //回傳資料塞回小table
+          var newReplyRow = document.createElement("tr");
+          newReplyRow.innerHTML = `<td><span style="font-weight:bold;">${data.replyUser}</span></td><td>${data.replyContent}</td><td>${data.creatTime}</td>`;
+          document.getElementById("table"+msgId).appendChild(newReplyRow);
+        });
+        
+      }else{
+        alert("回覆失敗");
+      }
+    });
+    }
+//=========================================
+
 
 
 </script>
 
 <body>
 
-<h1>HELLO DOJO</h1>
+<h1>DOJO 留言板 (v.jasmine)</h1>
 <div>
-    <form action="/getall" method="get">
-        <button type="submit">refresh</button>
-    </form>
-    <input type="text" value="${#list}">
-    <form id="form" action = "/save" method="post">
-            <div>使用者名稱:<input type="text" name="user" /></div>
-            <div>留言內容:<input type="textarea" name="content" /></div>
-                <input type='submit' value="Go">
-    </form>
-    <table width="100%"  id="dataTables-example">
+    <!-- <input type="text" value="${#list}"> -->
+    <div>
+      <form id="mainForm">
+              <div>姓名<input id="user" type="text" name="user" /></div>
+              <div>留言<input id="content" type="textarea" name="content" /></div>
+          <button type="button" id="go" onclick="doSave()">送出</button>
+      </form>
+    </div>
+
+
+
+    <table width="100%"  id="dataTables-example" border="1px solid black">
         <thead>
-        <tr>
-            <th>id</th>
-        </tr>
+	        <tr>
+	            <th>id</th>
+	            <th>IP</th>
+	            <th width="100px">USER NAME</th>
+              <th width="200px">CONTENT</th>
+              <th>REPLY</th>
+	        </tr>
         </thead>
-        <tbody>
-        <tr th:each="codingDojo:${list}" class="odd gradeX">
-            <td th:text="${codingDojo.id}"></td>
-        </tr>
+        <tbody id="list">
         </tbody>
     </table>
-    <img src="/getImage" alt="Girl in a jacket">
 
     
 </div>
