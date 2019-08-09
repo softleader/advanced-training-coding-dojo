@@ -8,8 +8,6 @@
 <script>
   queryAll();
 
-  //回覆的留言ID
-  //let replyMessageId;
 
 //=========================================
   function doSave() {
@@ -59,12 +57,8 @@
         });
     }
 
-
 //=========================================
-    function showReplyMessages(replyMessages){
-      console.log(replyMessages);
-    }
-//=========================================
+    //顯示個別留言回覆資訊
     function showReplyModal(msgId){
       console.log(msgId);
 
@@ -85,7 +79,6 @@
             //回覆table
             var msgsTable = document.createElement("table");
             msgsTable.setAttribute("id", msgTableId);
-            //msgsTable.innerHTML = "<thead><tr><th>Name</th><th>Reply</th><th>Time</th></tr></thead>";
             msgsTable.innerHTML += "<tbody>" + msgs.map(msg => `<tr><td><span style="font-weight:bold;">${msg.replyUser}</span></td><td>${msg.replyContent}</td><td>${msg.creatTime}</td></tr>`)
                         + "</tbody>";
             console.log(msgsTable);
@@ -110,7 +103,8 @@
     }
 
 //=========================================
-    function saveReply(msgId){
+  //回覆  
+  function saveReply(msgId){
       fetch('/reply/save', {
       body: JSON.stringify({
         codingDojo: {id: msgId},
@@ -127,7 +121,7 @@
         alert("回覆成功");
         response.json().then((data) => {
           console.log("reply res = ", data)
-          //回傳資料塞回小table
+          //回傳資料塞回留言小table
           var newReplyRow = document.createElement("tr");
           newReplyRow.innerHTML = `<td><span style="font-weight:bold;">${data.replyUser}</span></td><td>${data.replyContent}</td><td>${data.creatTime}</td>`;
           document.getElementById("table"+msgId).appendChild(newReplyRow);
@@ -146,7 +140,7 @@
 
 <body>
 
-<h1>DOJO 留言板 (v.jasmine)</h1>
+<h1>DOJO 留言板 (v.1-jasmine0810)</h1>
 <div>
     <!-- <input type="text" value="${#list}"> -->
     <div>
