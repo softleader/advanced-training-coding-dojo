@@ -10,5 +10,6 @@
 
     <modules>
         <module>coding-dojo-round-1</module>
+        <module>coding-dojo-round-2</module>
     </modules>
 </project>
