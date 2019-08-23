@@ -16,15 +16,29 @@ import excelEntity.entity.ExcelUpload;
 
 public class CodingDojoService {
 
+	private ExcelUpload ExcelUpload;
+
 	public List<ExcelUpload> dataUpload(MultipartFile file) {
+
+
+		List<ExcelUpload> excelUploads ;
 		List<ExcelUpload> excelUploadList = Lists.newArrayList();
 
 		try(InputStream in = file.getInputStream()) {
 			HSSFWorkbook wb = new HSSFWorkbook(in);
 			HSSFSheet sheet = wb.getSheetAt(0);
 			for (int i=0 ; i < sheet.getLastRowNum() ; ++i) {
+
+				ExcelUpload excelUpload = new ExcelUpload();
 				HSSFRow row = sheet.getRow(i);
+
 				row.getCell(0).getStringCellValue();
+				row.getCell(1).getStringCellValue();
+				row.getCell(2).getStringCellValue();
+				row.getCell(3).getStringCellValue();
+				row.getCell(4).getStringCellValue();
+				row.getCell(5).getStringCellValue();
+				
 
 			}
 		} catch (IOException e) {
