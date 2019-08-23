@@ -1,4 +1,4 @@
-package excelEntity.service;
+package tw.com.softleader.advancedtraining.codingdojoround2.service;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,11 +8,9 @@ import org.apache.commons.compress.utils.Lists;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.sl.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.web.multipart.MultipartFile;
 
-import excelEntity.entity.ExcelUpload;
+import tw.com.softleader.advancedtraining.codingdojoround2.entity.ExcelUpload;
 
 public class CodingDojoService {
 

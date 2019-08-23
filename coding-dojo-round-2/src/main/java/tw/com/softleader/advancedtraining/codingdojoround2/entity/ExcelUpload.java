@@ -1,4 +1,4 @@
-package excelEntity.entity;
+package tw.com.softleader.advancedtraining.codingdojoround2.entity;
 
 import lombok.Getter;
 import lombok.Setter;
