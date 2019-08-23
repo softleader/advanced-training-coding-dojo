@@ -21,10 +21,10 @@ public class ExcelUpload {
 
   private Double doubleNumber;
 
-  private LocalDateTime time = LocalDateTime.now();
+  private LocalDateTime time;
 
-  private LocalDateTime timeWithMD = LocalDateTime.now();
+  private LocalDateTime timeWithMD;
 
-  private LocalDateTime timeWithMDHS = LocalDateTime.now();
+  private LocalDateTime timeWithMDHS;
 
 }
