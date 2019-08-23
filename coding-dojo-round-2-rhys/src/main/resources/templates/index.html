@@ -40,18 +40,19 @@
             p3.id = "process";
             document.querySelector("#log").appendChild(p3);
             id = result.id;
+
+            let interval = setInterval(function() {
+                fetch(`/upload/${id}`
+                ).then(r => r.json()
+                ).then(result => {
+                    p3.innerText = `第 ${result.process} / ${result.total} 筆`;
+                    if (result.complete) {
+                        clearInterval(interval);
+                    }
+                });
+            }, 100);
         });
 
-        let interval = setInterval(function() {
-            fetch(`/upload/${id}`
-            ).then(r => r.json()
-            ).then(result => {
-                p3.innerText = `第 ${result.process} / ${result.total} 筆`;
-                if (result.complete) {
-                    clearInterval(interval);
-                }
-            });
-        }, 100);
     });
 
 </script>

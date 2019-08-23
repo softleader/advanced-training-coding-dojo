@@ -42,7 +42,7 @@ public class UploadController {
     try(Workbook workbook = WorkbookFactory.create(file.getInputStream())) {
       Sheet sheet = workbook.getSheetAt(0);
       int lastRowNum = sheet.getLastRowNum();
-      status.setTotal(lastRowNum);
+      status.setTotal(lastRowNum - 1);
 
       CompletableFuture.runAsync(() -> {
         for(int i = 1; i < lastRowNum; i++) {
