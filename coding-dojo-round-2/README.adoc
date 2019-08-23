@@ -1,0 +1,21 @@
+= Coding Dojo -Round2
+
+== 題目: 檔案上傳
+
+* 預計的部屬環境: 以 mvn spring-boot:run 在某台電腦上，並開啟 80 port 讓其他人訪問網頁介面
+* 基礎環境
+** Java Dependencies: Spring-MVC, Thymeleaf,  Lombok
+
+== 規則:
+
+1. 不可以增加 Java Dependencies
+2. 不可以使用 Javascript 套件
+3. 承上兩點，所以有多需要啥就自己刻出來
+
+== 需求:
+
+1. 透過Web介面上傳 excel (/file/70kRowSample.xlsx)
+2. 要可以看到 excel 是否上傳完成
+3. 要可以看到 java 讀到 excel 內容的第幾行
+4. 如果任意一行讀取有誤，要能夠顯示第幾行出了什麼錯
+5. 承4，前端可以選擇一出錯就要中斷，或者是有出錯仍全部跑完，但最後顯示那些行有錯誤
