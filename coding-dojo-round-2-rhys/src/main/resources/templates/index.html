@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<body>
+
+<input type="file" id="file">
+<div id="log">
+</div>
+
+</body>
+
+<script>
+
+    document.querySelector('#file').addEventListener('change', (e) => {
+
+        let p1 = document.createElement("p");
+        let p2 = document.createElement("p");
+        let p3 = document.createElement("p");
+        p1.innerText = "上傳中";
+        document.querySelector("#log").appendChild(p1);
+
+        let formData = new FormData();
+        formData.set("file", e.target.files[0], "excel.xlsx");
+
+        let id;
+
+        fetch("/upload", {
+            body: formData, // must match 'Content-Type' header
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+        }).then(r => r.json()
+        ).then(result => {
+            p2.innerText = "上傳完成";
+            document.querySelector("#log").appendChild(p2);
+
+            p3.innerText = `第 ${result.process} / ${result.total} 筆`;
+            p3.id = "process";
+            document.querySelector("#log").appendChild(p3);
+            id = result.id;
+        });
+
+        let interval = setInterval(function() {
+            fetch(`/upload/${id}`
+            ).then(r => r.json()
+            ).then(result => {
+                p3.innerText = `第 ${result.process} / ${result.total} 筆`;
+                if (result.complete) {
+                    clearInterval(interval);
+                }
+            });
+        }, 100);
+    });
+
+</script>
+
+</html>
