@@ -2,6 +2,7 @@ package tw.com.softleader.advancedtraining.codingdojoround2.service;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.apache.commons.compress.utils.Lists;
@@ -26,16 +27,30 @@ public class CodingDojoService {
 			HSSFWorkbook wb = new HSSFWorkbook(in);
 			HSSFSheet sheet = wb.getSheetAt(0);
 			for (int i=0 ; i < sheet.getLastRowNum() ; ++i) {
-
+//			  private Long id;
+//
+//			  private String word;
+//
+//			  private Integer number;
+//
+//			  private Double doubleNumber;
+//
+//			  private LocalDateTime time;
+//
+//			  private LocalDateTime timeWithMD;
+//
+//			  private LocalDateTime timeWithMDHS;
 				ExcelUpload excelUpload = new ExcelUpload();
 				HSSFRow row = sheet.getRow(i);
-
-				row.getCell(0).getStringCellValue();
-				row.getCell(1).getStringCellValue();
-				row.getCell(2).getStringCellValue();
-				row.getCell(3).getStringCellValue();
-				row.getCell(4).getStringCellValue();
-				row.getCell(5).getStringCellValue();
+				ExcelUpload excelRow = new ExcelUpload();
+				excelUpload.setWord(row.getCell(0).getStringCellValue());
+				excelUpload.setNumber(Integer.valueOf(row.getCell(1).getStringCellValue()));
+				excelUpload.setDoubleNumber(row.getCell(2).getNumericCellValue());
+				row.getCell(3).getStringCellValue(); //時間
+				row.getCell(4).getStringCellValue(); //日期
+				row.getCell(5).getStringCellValue(); //localDateTime
+				
+				
 				
 
 			}
